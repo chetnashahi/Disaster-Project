@@ -3,12 +3,18 @@ import pandas as pd
 from sqlalchemy.engine import create_engine
 
 def load_data(messages_filepath, categories_filepath):
+    """
+    Load message and category files
+    """
     messages = pd.read_csv(messages_filepath)
     categories = pd.read_csv(categories_filepath)
     df = pd.merge(messages, categories, on = 'id')
     return df
 
 def clean_data(df):
+    """
+    Clean the data
+    """
     categories = df['categories'].str.split(';',expand=True)
     # select the first row of the categories dataframe
     row = categories.iloc[0]
