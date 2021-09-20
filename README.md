@@ -3,8 +3,8 @@ Disaster Response Pipeline project is to categorize the message sent during any 
 
 ### Installation
 Below libraries are used:
--Pandas
--re
+- Pandas
+- re
 -sys
 -json
 -sklearn
