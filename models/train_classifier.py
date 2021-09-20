@@ -19,6 +19,8 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import classification_report
 import pickle
 def load_data(database_filepath):
+    """ Load messages and categories from database
+    """
     conn=sqlite3.connect(database_filepath)
     df= pd.read_sql('select  * from data',conn)
     X = df['message'].values
@@ -27,6 +29,9 @@ def load_data(database_filepath):
     return X,Y,category_names
 
 def tokenize(text):
+    """
+    Clean text messages
+    """
     text=text.lower()
     text = re.sub(r"[^a-zA-Z0-9]"," ", text.lower())
     tokens=word_tokenize(text)
@@ -40,6 +45,9 @@ def tokenize(text):
         clean_tokens.append(clean_tok)
     return clean_tokens
 def build_model():
+    """
+    Creates a ML pipeline with GridSearchCV
+    """
     pipeline = Pipeline([
     ('vect',CountVectorizer(tokenizer=tokenize)),
     ('tfidf',TfidfTransformer()),
@@ -55,12 +63,18 @@ def build_model():
 
 
 def evaluate_model(model, X_test, Y_test, category_names):
+    """
+    Shows performance metrics of the best model
+    """
     Y_pred=model.predict(X_test)
     report=classification_report(Y_test,Y_pred,target_names=category_names)
     print(report)
     return report
 
 def save_model(model, model_filepath):
+    """
+    Saves model to pickle file
+    """
     pickle.dump(model,open('Classifier.pkl','wb'))
 
 
