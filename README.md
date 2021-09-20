@@ -5,15 +5,15 @@ Disaster Response Pipeline project is to categorize the message sent during any 
 Below libraries are used:
 - Pandas
 - re
--sys
--json
--sklearn
--nltk
--sqlalchemy
--pickle
--Flask
--plotly
--sqlite3
+- sys
+- json
+- sklearn
+- nltk
+- sqlalchemy
+- pickle
+- Flask
+- plotly
+- sqlite3
 
 ### Project Descriptions
 The project has three components:
