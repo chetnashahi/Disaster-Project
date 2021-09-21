@@ -12,9 +12,17 @@ def load_data(messages_filepath, categories_filepath):
     return df
 
 def clean_data(df):
-    """
-    Clean the data
-    """
+    '''Clean Dataframe
+    Creates dataframe by splitting "categories" column string content
+    and only keeping numeric part.
+    merge it with original dataframe and remove duplicates
+    
+    Input:
+    df (dataframe) : name of dataframe
+    
+    Output:
+    df (dataframe) : name of dataframe
+    '''
     categories = df['categories'].str.split(';',expand=True)
     # select the first row of the categories dataframe
     row = categories.iloc[0]
@@ -46,11 +54,23 @@ def clean_data(df):
     df.drop_duplicates(inplace=True)
     return df
 def save_data(df, database_filename):
+    '''
+    Save data in SQL database
+    
+    Input:
+    
+    df (dataframe) : name of dataframe
+    database_filename : filename of database
+    Returns: None
+    '''
     engine = create_engine('sqlite:///DisasterResponse.db')
     df.to_sql('data', engine, index=False, if_exists='replace')
 
 
 def main():
+    '''
+    Main function to call all the functions
+    '''
     if len(sys.argv) == 4:
 
         messages_filepath, categories_filepath, database_filepath = sys.argv[1:]
