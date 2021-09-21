@@ -61,6 +61,15 @@ y.head()
 
 
 def tokenize(text):
+    '''Process text into clean tokens
+    Text is processed by keeping it in lower case & words lemmatized into their original stem
+    
+    Input:
+    text (str) : message in text form
+    
+    Output:
+    clean_tokens (array): array of words after processing
+    '''
     url_regex= 'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
     detected_urls= re.findall(url_regex,text)
     for url in detected_urls:
@@ -138,14 +147,6 @@ df.head
 # In[61]:
 
 
-def get_scores(y_test,y_pred):
-    i=0
-    for col in y_test:
-        print('Feature :', col)
-        print(classification_report_test[col],y_pred[:,i])
-        i=i+1
-    accuracy = (y_pred==y_test.values).mean()
-    print('Accuracy', accuracy)
 y_test2=np.asarray(y_test)
 print(classification_report(y_test2,y_pred,target_names=y))
 
@@ -203,6 +204,7 @@ print(classification_report(y_test2,y_pred,target_names=target_names))
 
 
 def display_results(y_test,y_pred):
+
     labels=np.unique(y_pred)
     confusion_mat=confusion_matrix(y_test,y_pred,labels=labels)
     accuracy=(y_pred==y_test).mean()
