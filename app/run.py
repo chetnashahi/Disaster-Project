@@ -15,6 +15,15 @@ from sqlalchemy.engine import create_engine
 app = Flask(__name__)
 
 def tokenize(text):
+    '''Process text into clean tokens
+    Text is processed by keeping it in lower case & words lemmatized into their original stem
+    
+    Input:
+    text (str) : message in text form
+    
+    Output:
+    clean_tokens (array): array of words after processing
+    '''
     tokens = word_tokenize(text)
     lemmatizer = WordNetLemmatizer()
 
@@ -37,15 +46,42 @@ model = joblib.load("Classifier.pkl")
 @app.route('/')
 @app.route('/index')
 def index():
+    '''
+    Prepare plotly graphs & layout to dump to JSON
+    for HTML front end use
     
+    Input: None
+    Returns: None
+    '''
     # extract data needed for visuals
     # TODO: Below is an example - modify to extract data for your own visuals
     genre_counts = df.groupby('genre').count()['message']
     genre_names = list(genre_counts.index)
     
+    category_names = df.columns.values[4:]
+    category_counts = df['category_names'].sum()
     # create visuals
-    # TODO: Below is an example - modify to create your own visuals
+    
     graphs = [
+        {
+            'data': [
+                Bar(
+                    x=category_names,
+                    y=category_counts.
+                    orientation='h'
+                )
+            ],
+
+            'layout': {
+                'title': 'Distribution of Category of Disaster',
+                'yaxis': {
+                    'title': "Count"
+                },
+                'xaxis': {
+                    'title': "Category"
+                }
+            }
+        },
         {
             'data': [
                 Bar(
@@ -77,6 +113,12 @@ def index():
 # web page that handles user query and displays model results
 @app.route('/go')
 def go():
+    '''
+    Save user input in query
+    
+    Input: None
+    Returns: None
+    '''
     # save user input in query
     query = request.args.get('query', '') 
 
