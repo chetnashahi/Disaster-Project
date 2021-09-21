@@ -19,8 +19,16 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import classification_report
 import pickle
 def load_data(database_filepath):
-    """ Load messages and categories from database
-    """
+    '''
+    Load messages and categories from database
+    Input:
+    database_filepath(str): name of database containing data
+    
+    Return:
+    X(array): Name of array for features
+    Y(array): Name of array for multioutput labels
+    
+    '''
     conn=sqlite3.connect(database_filepath)
     df= pd.read_sql('select  * from data',conn)
     X = df['message'].values
@@ -29,9 +37,16 @@ def load_data(database_filepath):
     return X,Y,category_names
 
 def tokenize(text):
-    """
-    Clean text messages
-    """
+    '''Process text into clean tokens
+    Text is processed by keeping it in lower case,
+    remove stopwords & words lemmatized into their original stem
+    
+    Input:
+    text (str) : message in text form
+    
+    Output:
+    clean_tokens (array): array of words after processing
+    '''
     text=text.lower()
     text = re.sub(r"[^a-zA-Z0-9]"," ", text.lower())
     tokens=word_tokenize(text)
@@ -45,9 +60,14 @@ def tokenize(text):
         clean_tokens.append(clean_tok)
     return clean_tokens
 def build_model():
-    """
-    Creates a ML pipeline with GridSearchCV
-    """
+    '''Creates a ML pipeline with GridSearchCV
+    
+    Input:
+    None
+    
+    Output:
+    scikit learn pipeline model
+    '''
     pipeline = Pipeline([
     ('vect',CountVectorizer(tokenizer=tokenize)),
     ('tfidf',TfidfTransformer()),
@@ -63,18 +83,31 @@ def build_model():
 
 
 def evaluate_model(model, X_test, Y_test, category_names):
-    """
+    '''
     Shows performance metrics of the best model
-    """
+    
+    Input:
+    model: name of the model
+    X_test (dataframe) : test data features
+    Y_test (dataframe): multioutput test data labels
+    category_names:
+    
+    Returns:
+    report: classification report
+    '''
     Y_pred=model.predict(X_test)
     report=classification_report(Y_test,Y_pred,target_names=category_names)
     print(report)
     return report
 
 def save_model(model, model_filepath):
-    """
+    '''
     Saves model to pickle file
-    """
+    
+    Input:
+    model: Name of model
+    model_filepath: name of database containing data
+    '''
     pickle.dump(model,open('Classifier.pkl','wb'))
 
 
