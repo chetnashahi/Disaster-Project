@@ -39,7 +39,7 @@ engine = create_engine('sqlite:///../data/DisasterResponse.db')
 df = pd.read_sql_table('data', engine)
 
 # load model
-model = joblib.load("Classifier.pkl")
+model = joblib.load("../Classifier.pkl")
 
 
 # index webpage displays cool visuals and receives user input text for model
